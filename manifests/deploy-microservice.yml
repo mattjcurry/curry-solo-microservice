@@ -2,26 +2,26 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
     labels:
-        app: curry-microservice
+        app: curry-solo-microservice
         stack: frontend
         source: demo
-    name: curry-microservice
+    name: curry-solo-microservice
     namespace: microservices
 spec:
     replicas: 3
     selector:
         matchLabels:
-            run: curry-microservice
+            run: curry-solo-microservice
     template:
         metadata:
             labels:
-                app: curry-microservice
-                run: curry-microservice
+                app: curry-solo-microservice
+                run: curry-solo-microservice
                 source: demo
         spec:
             containers:
-                -   image: 219099013464.dkr.ecr.us-west-2.amazonaws.com/curry-microservice
-                    name: curry-microservice
+                -   image: 219099013464.dkr.ecr.us-west-2.amazonaws.com/curry-solo-microservice
+                    name: curry-solo-microservice
                     ports:
                         -   name: web
                             containerPort: 8080
@@ -31,13 +31,13 @@ kind: Service
 apiVersion: v1
 metadata:
     labels:
-        app: curry-microservice-service
-    name: curry-microservice-service
+        app: curry-solo-microservice-service
+    name: curry-solo-microservice-service
     namespace: microservices
 spec:
     selector:
         source: demo
-        app: curry-microservice
+        app: curry-solo-microservice
     ports:
         -   name: web
             protocol: TCP
@@ -51,15 +51,15 @@ kind: Ingress
 metadata:
     annotations:
         nginx.ingress.kubernetes.io/rewrite-target: /$2
-    name: curry-ingress
+    name: curry-solo-ingress
     namespace: microservices
 spec:
     rules:
         -   http:
                 paths:
-                    -   path: /curry(/|$)(.*)
+                    -   path: /curry-solo(/|$)(.*)
                         backend:
-                            serviceName: curry-microservice-service
+                            serviceName: curry-solo-microservice-service
                             servicePort: 30201
 
 
